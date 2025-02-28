@@ -17,7 +17,7 @@ export default function LoginPage() {
       {/* Sección de inicio de sesión */}
       <div className="w-2/3 bg-white flex items-center justify-center p-8">
         <div className="w-full">
-          <h2 className="text-[50px] font-bold text-center mb-[70px] text-blue-800">Iniciar Sesión</h2>
+          <h2 className="text-[50px] font-bold text-center mb-[70px] text-azul-principal">Iniciar Sesión</h2>
           
           <form className="max-w-lg mx-auto">
             <div className="mb-4">

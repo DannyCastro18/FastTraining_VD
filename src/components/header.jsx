@@ -2,7 +2,7 @@ import React from 'react'
 
 function header() {
   return (
-    <div>header</div>
+    <div>registarse 1</div>
   )
 }
 
