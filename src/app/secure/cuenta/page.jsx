@@ -70,5 +70,3 @@ export default function Page() {
 const SidebarIcon = ({ icon }) => (
   <div className="text-blue-800 text-2xl hover:text-blue-600 cursor-pointer">{icon}</div>
 );
-
-
