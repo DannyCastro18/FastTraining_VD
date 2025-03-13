@@ -9,29 +9,14 @@ function BarraAdmin() {
           <i className="fa-solid fa-house text-3xl"></i>
         </div>
         <div>
+        <i className="fa-solid fa-folder-open text-3xl"></i>
+        </div>
+        <div>
           <i className="fa-solid fa-users text-3xl"></i>
         </div>
-        <div>
-          <i className="fa-solid fa-folder-open text-3xl"></i>
-        </div>
-        <div>
-          <i className="fa-solid fa-gear text-3xl"></i>
-        </div>
-        <div>
-          <i className="fa-solid fa-bell text-3xl"></i>
-        </div>
+       
       </div>
-      <div className="grid grid-rows-3 text-azul-principal h-2/6 ">
-        <div>
-          <i className="fa-solid fa-moon text-3xl"></i>
-        </div>
-        <div>
-          <i className="fa-solid fa-circle-question text-3xl"></i>
-        </div>
-        <div>
-          <i className="fa-solid fa-door-open text-3xl"></i>
-        </div>
-      </div>
+      
     </div>
   );
 }
