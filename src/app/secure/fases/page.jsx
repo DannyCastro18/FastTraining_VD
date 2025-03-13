@@ -1,8 +1,7 @@
 "use client";
-
+import "@fortawesome/fontawesome-free/css/all.min.css";
 import { useState } from "react";
 import Image from "next/image";
-import { Search } from "lucide-react";
 
 export default function TrainingSession() {
   const [data, setData] = useState({
@@ -16,17 +15,16 @@ export default function TrainingSession() {
   };
 
   return (
-    <div className="flex flex-col items-center min-h-screen bg-gray-100 p-12">
-      {/* Logo y barra de búsqueda */}
-      <div className="flex items-center gap-10 w-full max-w-screen-2xl mb-6">
+    <div className="flex flex-col items-center min-h-screen bg-gray-200 p-12">
+      {/* Logo */}
+      <div className="flex items-center justify-between w-full max-w-screen-2xl mb-6">
         <Image src="/Fast_largo.png" alt="Fast Training" width={150} height={80} />
-        <div className="relative flex-1">
-          <Search className="absolute left-3 top-3 text-black" />
-          <input
-            type="text"
-            placeholder="Buscar"
-            className="w-full pl-10 pr-4 py-2 placeholder:text-black border rounded-lg text-black focus:outline-none bg-blue-100"
-          />
+        
+        {/* Iconos en la parte superior derecha */}
+        <div className="flex items-center  gap-6">
+          <i className="fa-solid fa-moon text-5xl text-azul-principal cursor-pointer ml-5"></i>
+          <i className="fa-solid fa-bell text-5xl text-azul-principal cursor-pointer ml-5"></i>
+          <i className="fa-solid fa-user-circle text-5xl text-azul-principal cursor-pointer ml-5"></i>
         </div>
       </div>
 
@@ -35,7 +33,7 @@ export default function TrainingSession() {
         <h2 className="text-6xl font-bold text-center mb-16 text-black">Sesión de Entrenamiento - Lunes</h2>
         <table className="w-full border-collapse border border-gray-400 text-black text-3xl">
           <thead>
-            <tr className="bg-azul-principal text-white text-4xl">
+            <tr className="bg-blue-700 text-white text-4xl">
               <th className="p-10 border border-gray-400">Fase</th>
               <th className="p-10 border border-gray-400">Inicial</th>
               <th className="p-10 border border-gray-400">Central</th>
