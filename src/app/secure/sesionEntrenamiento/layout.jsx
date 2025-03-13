@@ -1,12 +1,21 @@
-import BarraAdmin from "@/components/BarraAdmin";
+import { ThemeProvider } from "./context/ThemeProvider";
+import Header from "./components/Header";
+import Sidebar from "./components/Sidebar";
 
 export default function RootLayout({ children }) {
   return (
-    <div className="w-full h-screen">
-      <main className="flex h-[95%]">
-        <BarraAdmin />
-        <div className="w-[90%]">{children}</div>
-      </main>
-    </div>
+    <ThemeProvider>
+      <html lang="es">
+        <body className="flex">
+          <Sidebar />
+          <div className="flex flex-col flex-1">
+            <Header />
+            <main className="flex justify-center items-center h-screen">
+              {children}
+            </main>
+          </div>
+        </body>
+      </html>
+    </ThemeProvider>
   );
 }
