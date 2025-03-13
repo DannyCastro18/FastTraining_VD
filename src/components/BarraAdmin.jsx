@@ -9,12 +9,6 @@ function BarraAdmin() {
           <i className="fa-solid fa-house text-3xl"></i>
         </div>
         <div>
-          <i className="fa-solid fa-users text-3xl"></i>
-        </div>
-        <div>
-          <i className="fa-solid fa-folder-open text-3xl"></i>
-        </div>
-        <div>
           <i className="fa-solid fa-gear text-3xl"></i>
         </div>
         <div>
