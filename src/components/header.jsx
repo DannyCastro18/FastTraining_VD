@@ -5,12 +5,13 @@ import { FaMoon, FaBell } from "react-icons/fa";
 
 const Header = () => {
   return (
-    <header className="bg-white flex justify-end items-center px-6 py-3  transition-all w-[300px] ml-auto rounded-lg">
+    <header className="bg-white flex justify-end items-center px-6 py-3 transition-all  rounded-lg 
+    ">
       <div className="flex items-center space-x-6">
         <FaMoon className="text-[#205088] dark:text-blue text-xl cursor-pointer" />
         <FaBell className="text-[#205088] dark:text-blue text-xl cursor-pointer" />
 
-        <Image
+        <Image  
           src="/user.jpg"
           alt="Usuario"
           width={40}
