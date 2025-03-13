@@ -1,4 +1,4 @@
-import Header from "@/components/header";
+import Header from "@/components/Header";
 import Tabla  from "@/components/Tabla";
 import Sidebar from "@/components/Sidebar";
 

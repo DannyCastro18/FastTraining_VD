@@ -1,5 +1,5 @@
 import EntrenamientoForm from '@/app/auth/entrenamiento/page';
-import Header from "@/components/header";
+import Header from "@/components/Header";
 import Sidebar from "@/components/Sidebar";
 
 export default function sesionesEntrenamiento() {
