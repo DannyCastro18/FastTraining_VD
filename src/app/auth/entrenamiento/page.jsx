@@ -51,7 +51,7 @@ const EntrenamientoForm = () => {
             value={selectedJugador}
             onChange={(e) => setSelectedJugador(e.target.value)}
           >
-            <option value="">-- Selecciona --</option>
+            <option value="">Selecciona</option>
             {jugadores.map((jugador) => (
               <option key={jugador.id} value={jugador.id}>
                 {jugador.nombre}
@@ -92,13 +92,13 @@ const EntrenamientoForm = () => {
             <h3 className="text-lg font-bold text-gray-800">
               📋 Entrenamiento generado
             </h3>
-            <p className="mt-2">
+            <p className="mt-2 text-black">
               <strong>Jugador:</strong> {entrenamiento.jugador}
             </p>
-            <p>
+            <p className="text-black">
               <strong>Plan:</strong> {entrenamiento.plan}
             </p>
-            <p>
+            <p className="text-black">
               <strong>Duración:</strong> {entrenamiento.duracion}
             </p>
           </div>
