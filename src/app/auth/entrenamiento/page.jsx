@@ -4,18 +4,18 @@ import { useState, useEffect } from "react";
 
 const EntrenamientoForm = () => {
   const [jugadores, setJugadores] = useState([]);
-  const [planesEntrenamiento, setPlanesEntrenamiento] = useState([
+  const [objetivos, setObjetivos] = useState([
     "Velocidad y resistencia",
     "Fuerza y potencia",
     "Técnica y precisión",
     "Recuperación activa",
   ]);
   const [selectedJugador, setSelectedJugador] = useState("");
-  const [selectedPlan, setSelectedPlan] = useState("Velocidad y resistencia");
+  const [selectedObjetivo, setSelectedObjetivo] = useState("Velocidad y resistencia");
   const [entrenamiento, setEntrenamiento] = useState(null);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/jugadores/ver") // ruta del backend
+    fetch("http//:localhost:5000/api/jugadores/ver")
       .then((res) => res.json())
       .then((data) => setJugadores(data))
       .catch((error) => console.error("Error cargando jugadores:", error));
@@ -27,11 +27,32 @@ const EntrenamientoForm = () => {
       return;
     }
 
-    setEntrenamiento({
-      jugador: jugadores.find((j) => j.id === Number(selectedJugador))?.nombre,
-      plan: selectedPlan,
+    const nuevoEntrenamiento = {
+      jugadorId: Number(selectedJugador),
+      objetivo: selectedObjetivo,
       duracion: "60 min",
-    });
+    };
+
+    fetch("http//:localhost:5000/api/entrenamientos/crear", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(nuevoEntrenamiento),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setEntrenamiento({
+          jugador: jugadores.find((j) => j.id === Number(selectedJugador))?.nombre,
+          plan: selectedObjetivo,
+          duracion: "60 min",
+        });
+        alert("Entrenamiento registrado correctamente");
+      })
+      .catch((error) => {
+        console.error("Error al crear entrenamiento:", error);
+        alert("Hubo un error al registrar el entrenamiento");
+      });
   };
 
   return (
@@ -60,19 +81,19 @@ const EntrenamientoForm = () => {
           </select>
         </div>
 
-        {/* Selección de plan de entrenamiento */}
+        {/* Selección de objetivo */}
         <div className="mb-4">
           <label className="block text-sm font-medium mb-2 text-black">
-            Selecciona un plan de entrenamiento
+            Selecciona un objetivo
           </label>
           <select
             className="border p-2 w-full rounded-md text-black"
-            value={selectedPlan}
-            onChange={(e) => setSelectedPlan(e.target.value)}
+            value={selectedObjetivo}
+            onChange={(e) => setSelectedObjetivo(e.target.value)}
           >
-            {planesEntrenamiento.map((plan, index) => (
-              <option key={index} value={plan}>
-                {plan}
+            {objetivos.map((objetivo, index) => (
+              <option key={index} value={objetivo}>
+                {objetivo}
               </option>
             ))}
           </select>
@@ -90,13 +111,13 @@ const EntrenamientoForm = () => {
         {entrenamiento && (
           <div className="mt-6 p-4 bg-gray-100 rounded-md">
             <h3 className="text-lg font-bold text-gray-800">
-              📋 Entrenamiento generado
+              📋 Entrenamiento registrado
             </h3>
             <p className="mt-2 text-black">
               <strong>Jugador:</strong> {entrenamiento.jugador}
             </p>
             <p className="text-black">
-              <strong>Plan:</strong> {entrenamiento.plan}
+              <strong>Objetivo:</strong> {entrenamiento.plan}
             </p>
             <p className="text-black">
               <strong>Duración:</strong> {entrenamiento.duracion}
