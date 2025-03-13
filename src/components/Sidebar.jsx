@@ -9,10 +9,10 @@ const Navbar = () => {
         <Link href="/secure/entrenador/inicio">
           <FaHome className="text-[#205088] dark:text-blue text-3xl transition-colors" />
         </Link>
-        <Link href="/secure/entrenador/creacionPlan/page">
+        <Link href="/secure/entrenador/creacionPlan">
           <FaCalendarAlt className="text-[#205088] dark:text-blue text-3xl transition-colors" />
         </Link>
-        <Link href="/perfil">
+        <Link href="/secure/entrenador/ingresoDatos">
           <FaUserEdit className="text-[#205088] dark:text-blue text-3xl transition-colors" />
         </Link>
       </div>
