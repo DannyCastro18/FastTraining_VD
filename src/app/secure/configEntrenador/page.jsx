@@ -5,9 +5,14 @@ import Image from "next/image";
 
 export default function ProfilePage() {
   const [entrenador, setEntrenador] = useState({
-    nombre: "",
-    correo: "",
-    rol: ""
+    id: null,
+    email: "",
+    persona_id: null,
+    rol_id: null,
+    persona: {
+      nombre: "",
+      apellido: ""
+    }
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -27,11 +32,7 @@ export default function ProfilePage() {
       }
       
       const data = await response.json();
-      setEntrenador({
-        nombre: data.nombre || "Sin nombre",
-        correo: data.correo || "Sin correo",
-        rol: data.rol || "Sin rol"
-      });
+      setEntrenador(data);
     } catch (err) {
       console.error("Error al obtener entrenador:", err);
       setError("No se pudo cargar la información del entrenador");
@@ -103,10 +104,7 @@ export default function ProfilePage() {
       setTimeout(() => setSuccessMessage(""), 3000);
       
       // Actualizar el estado local con los nuevos datos
-      setEntrenador(prevState => ({
-        ...prevState,
-        ...datosActualizados
-      }));
+      obtenerEntrenador(); // Re-fetch para obtener los datos actualizados
       
       return data;
     } catch (err) {
@@ -141,12 +139,12 @@ export default function ProfilePage() {
   // Función para cambiar contraseña
   const cambiarContrasena = async (nuevaContrasena) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/entrenador/${entrenadorId}/contrasena`, {
+      const response = await fetch(`http://localhost:5000/api/entrenador/${entrenadorId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ contrasena: nuevaContrasena }),
+        body: JSON.stringify({ password: nuevaContrasena }),
       });
       
       if (!response.ok) {
@@ -170,6 +168,19 @@ export default function ProfilePage() {
   useEffect(() => {
     obtenerEntrenador();
   }, []);
+
+  // Determinar el nombre del rol basado en rol_id
+  const getRolName = (rolId) => {
+    if (rolId === 3) return "Entrenador";
+    if (rolId === 2) return "Usuario";
+    if (rolId === 1) return "Administrador";
+    return "Desconocido";
+  };
+
+  // Formatear el nombre completo
+  const nombreCompleto = entrenador.persona ? 
+    `${entrenador.persona.nombre || ""} ${entrenador.persona.apellido || ""}` : 
+    "Usuario";
 
   return (
     <div className="flex flex-col min-h-screen bg-white w-[100%] pl-[95px]">
@@ -223,7 +234,7 @@ export default function ProfilePage() {
                   <label className="block text-azul-principal text-2xl font-medium mb-4">Nombre</label>
                   <input
                     type="text"
-                    value={entrenador.nombre}
+                    value={nombreCompleto}
                     className="w-full h-[50px] bg-gray-300 text-gray-600 border px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                     disabled
                   />
@@ -232,7 +243,7 @@ export default function ProfilePage() {
                   <label className="block text-azul-principal font-medium text-2xl mb-4">Correo Electrónico</label>
                   <input
                     type="email"
-                    value={entrenador.correo}
+                    value={entrenador.email || ""}
                     className="w-full h-[50px] bg-gray-300 text-gray-600 border px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                     disabled
                   />
@@ -241,7 +252,7 @@ export default function ProfilePage() {
                   <label className="block text-azul-principal font-medium text-2xl mb-4">Rol</label>
                   <input
                     type="text"
-                    value={entrenador.rol}
+                    value={getRolName(entrenador.rol_id)}
                     className="w-full h-[50px] bg-gray-300 text-gray-600 border px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                     disabled
                   />

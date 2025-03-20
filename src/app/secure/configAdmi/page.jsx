@@ -9,6 +9,8 @@ export default function ProfilePage() {
     correo: "",
     rol: ""
   });
+  const [personas, setPersonas] = useState([]);
+  const [mostrarListaPersonas, setMostrarListaPersonas] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [successMessage, setSuccessMessage] = useState("");
@@ -28,7 +30,8 @@ export default function ProfilePage() {
       
       const data = await response.json();
       console.log("Lista de personas:", data);
-      // Aquí podrías mostrar esta lista en otro componente o sección
+      setPersonas(data);
+      setMostrarListaPersonas(true);
     } catch (err) {
       console.error("Error al obtener personas:", err);
       setError("No se pudo cargar la información de personas");
@@ -64,6 +67,7 @@ export default function ProfilePage() {
   // Función para crear una nueva persona
   const crearPersona = async (nuevaPersona) => {
     try {
+      setLoading(true);
       const response = await fetch('http://localhost:5000/api/personas', {
         method: 'POST',
         headers: {
@@ -79,17 +83,26 @@ export default function ProfilePage() {
       const data = await response.json();
       setSuccessMessage("Persona creada exitosamente");
       setTimeout(() => setSuccessMessage(""), 3000);
+      
+      // Refrescar la lista de personas si está visible
+      if (mostrarListaPersonas) {
+        obtenerPersonas();
+      }
+      
       return data;
     } catch (err) {
       console.error("Error al crear persona:", err);
       setError("No se pudo crear la persona");
       setTimeout(() => setError(""), 3000);
+    } finally {
+      setLoading(false);
     }
   };
 
   // Función para actualizar datos de una persona
   const actualizarPersona = async (datosActualizados) => {
     try {
+      setLoading(true);
       const response = await fetch(`http://localhost:5000/api/personas/${personaId}`, {
         method: 'PUT',
         headers: {
@@ -117,6 +130,8 @@ export default function ProfilePage() {
       console.error("Error al actualizar persona:", err);
       setError("No se pudieron actualizar los datos");
       setTimeout(() => setError(""), 3000);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -124,6 +139,7 @@ export default function ProfilePage() {
   const eliminarPersona = async () => {
     if (window.confirm("¿Estás seguro de que deseas eliminar esta cuenta? Esta acción no se puede deshacer.")) {
       try {
+        setLoading(true);
         const response = await fetch(`http://localhost:5000/api/personas/${personaId}`, {
           method: 'DELETE',
         });
@@ -141,13 +157,16 @@ export default function ProfilePage() {
         console.error("Error al eliminar cuenta:", err);
         setError("No se pudo eliminar la cuenta");
         setTimeout(() => setError(""), 3000);
+      } finally {
+        setLoading(false);
       }
     }
   };
 
-  // Función para cambiar contraseña (asumiendo que existe este endpoint)
+  // Función para cambiar contraseña
   const cambiarContrasena = async (nuevaContrasena) => {
     try {
+      setLoading(true);
       const response = await fetch(`http://localhost:5000/api/personas/${personaId}/contrasena`, {
         method: 'PUT',
         headers: {
@@ -170,6 +189,8 @@ export default function ProfilePage() {
       console.error("Error al cambiar contraseña:", err);
       setError("No se pudo cambiar la contraseña");
       setTimeout(() => setError(""), 3000);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -212,21 +233,41 @@ export default function ProfilePage() {
               alt="Perfil"
               width={300}
               height={300}
-              className="rounded-full border-4 border-blue-500 object-cover"
+              className="rounded-full border-4 border-azul-principal object-cover"
             />
           </div>
           {/* Botón para listar todas las personas */}
           <button
             onClick={obtenerPersonas}
-            className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-700 transition"
+            className="mt-4 px-4 py-2 bg-azul-principal text-white rounded-lg hover:bg-azul-principal transition"
           >
-            Ver todas las personas
+            {mostrarListaPersonas ? "Ocultar personas" : "Ver todas las personas"}
           </button>
+          
+          {/* Lista de personas */}
+          {mostrarListaPersonas && (
+            <div className="mt-6 w-full px-4">
+              <h3 className="text-xl font-semibold mb-2">Lista de Personas</h3>
+              {loading ? (
+                <p>Cargando...</p>
+              ) : (
+                <ul className="bg-white border rounded-lg divide-y">
+                  {personas.map((p) => (
+                    <li key={p.id} className="p-3 hover:bg-gray-50">
+                      <div className="font-medium">{p.nombre}</div>
+                      <div className="text-sm text-gray-600">{p.correo}</div>
+                      <div className="text-xs text-gray-500">Rol: {p.rol}</div>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          )}
         </div>
 
         {/* Contenido principal */}
         <main className="w-[600px] p-6">
-          {loading ? (
+          {loading && !mostrarListaPersonas ? (
             <div className="text-center py-12">
               <p>Cargando datos...</p>
             </div>
@@ -274,7 +315,7 @@ export default function ProfilePage() {
                       });
                     }
                   }}
-                  className="mt-4 w-full px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-700 transition"
+                  className="mt-4 w-full px-4 py-2 bg-azul-principal text-white rounded-lg hover:bg-blue-700 transition"
                 >
                   Editar información
                 </button>
@@ -328,12 +369,14 @@ export default function ProfilePage() {
             const nombre = prompt("Introduce el nombre:");
             const correo = prompt("Introduce el correo electrónico:");
             const rol = prompt("Introduce el rol (Administrador, Usuario, etc.):");
+            const password = prompt("Introduce la contraseña:");
             
             if (nombre && correo && rol) {
               crearPersona({
                 nombre: nombre,
                 correo: correo,
-                rol: rol
+                rol: rol,
+                password: password || 'default123'
               });
             }
           }}
